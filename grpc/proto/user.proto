@@ -1,0 +1,19 @@
+syntax="proto3";
+
+service user {
+  rpc getUserList(stream SearchKey) returns (stream UserList) {}
+}
+
+message UserList {
+  message UserMap {
+    map<string, string> rowMap = 1;
+  }
+  repeated UserMap usermap = 1;
+}
+
+message SearchKey {
+  oneof Key {
+    string id = 1;
+    string name = 2;
+  }
+}
