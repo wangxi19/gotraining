@@ -1,7 +1,7 @@
 syntax="proto3";
 
 service user {
-  rpc getUserList(stream SearchKey) returns (stream UserList) {}
+  rpc getUserList(stream SearchWheres) returns (stream UserList) {}
 }
 
 message UserList {
@@ -11,9 +11,11 @@ message UserList {
   repeated UserMap usermap = 1;
 }
 
-message SearchKey {
-  oneof Key {
-    string id = 1;
-    string name = 2;
-  }
+
+message SearchWheres {
+    message SearchWhere {
+        string key = 1;
+        repeated string val = 2;
+    }
+    repeated SearchWhere wheres = 1;
 }

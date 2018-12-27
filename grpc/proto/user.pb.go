@@ -100,97 +100,104 @@ func (m *UserList_UserMap) GetRowMap() map[string]string {
 	return nil
 }
 
-type SearchKey struct {
-	// Types that are valid to be assigned to Key:
-	//	*SearchKey_Id
-	//	*SearchKey_Name
-	Key                  isSearchKey_Key `protobuf_oneof:"Key"`
-	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
-	XXX_unrecognized     []byte          `json:"-"`
-	XXX_sizecache        int32           `json:"-"`
+type SearchWheres struct {
+	Wheres               []*SearchWheres_SearchWhere `protobuf:"bytes,1,rep,name=wheres,proto3" json:"wheres,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                    `json:"-"`
+	XXX_unrecognized     []byte                      `json:"-"`
+	XXX_sizecache        int32                       `json:"-"`
 }
 
-func (m *SearchKey) Reset()         { *m = SearchKey{} }
-func (m *SearchKey) String() string { return proto.CompactTextString(m) }
-func (*SearchKey) ProtoMessage()    {}
-func (*SearchKey) Descriptor() ([]byte, []int) {
+func (m *SearchWheres) Reset()         { *m = SearchWheres{} }
+func (m *SearchWheres) String() string { return proto.CompactTextString(m) }
+func (*SearchWheres) ProtoMessage()    {}
+func (*SearchWheres) Descriptor() ([]byte, []int) {
 	return fileDescriptor_116e343673f7ffaf, []int{1}
 }
 
-func (m *SearchKey) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SearchKey.Unmarshal(m, b)
+func (m *SearchWheres) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SearchWheres.Unmarshal(m, b)
 }
-func (m *SearchKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SearchKey.Marshal(b, m, deterministic)
+func (m *SearchWheres) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SearchWheres.Marshal(b, m, deterministic)
 }
-func (m *SearchKey) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SearchKey.Merge(m, src)
+func (m *SearchWheres) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SearchWheres.Merge(m, src)
 }
-func (m *SearchKey) XXX_Size() int {
-	return xxx_messageInfo_SearchKey.Size(m)
+func (m *SearchWheres) XXX_Size() int {
+	return xxx_messageInfo_SearchWheres.Size(m)
 }
-func (m *SearchKey) XXX_DiscardUnknown() {
-	xxx_messageInfo_SearchKey.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_SearchKey proto.InternalMessageInfo
-
-type isSearchKey_Key interface {
-	isSearchKey_Key()
+func (m *SearchWheres) XXX_DiscardUnknown() {
+	xxx_messageInfo_SearchWheres.DiscardUnknown(m)
 }
 
-type SearchKey_Id struct {
-	Id string `protobuf:"bytes,1,opt,name=id,proto3,oneof"`
-}
+var xxx_messageInfo_SearchWheres proto.InternalMessageInfo
 
-type SearchKey_Name struct {
-	Name string `protobuf:"bytes,2,opt,name=name,proto3,oneof"`
-}
-
-func (*SearchKey_Id) isSearchKey_Key() {}
-
-func (*SearchKey_Name) isSearchKey_Key() {}
-
-func (m *SearchKey) GetKey() isSearchKey_Key {
+func (m *SearchWheres) GetWheres() []*SearchWheres_SearchWhere {
 	if m != nil {
-		return m.Key
+		return m.Wheres
 	}
 	return nil
 }
 
-func (m *SearchKey) GetId() string {
-	if x, ok := m.GetKey().(*SearchKey_Id); ok {
-		return x.Id
+type SearchWheres_SearchWhere struct {
+	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Val                  []string `protobuf:"bytes,2,rep,name=val,proto3" json:"val,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SearchWheres_SearchWhere) Reset()         { *m = SearchWheres_SearchWhere{} }
+func (m *SearchWheres_SearchWhere) String() string { return proto.CompactTextString(m) }
+func (*SearchWheres_SearchWhere) ProtoMessage()    {}
+func (*SearchWheres_SearchWhere) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{1, 0}
+}
+
+func (m *SearchWheres_SearchWhere) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SearchWheres_SearchWhere.Unmarshal(m, b)
+}
+func (m *SearchWheres_SearchWhere) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SearchWheres_SearchWhere.Marshal(b, m, deterministic)
+}
+func (m *SearchWheres_SearchWhere) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SearchWheres_SearchWhere.Merge(m, src)
+}
+func (m *SearchWheres_SearchWhere) XXX_Size() int {
+	return xxx_messageInfo_SearchWheres_SearchWhere.Size(m)
+}
+func (m *SearchWheres_SearchWhere) XXX_DiscardUnknown() {
+	xxx_messageInfo_SearchWheres_SearchWhere.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SearchWheres_SearchWhere proto.InternalMessageInfo
+
+func (m *SearchWheres_SearchWhere) GetKey() string {
+	if m != nil {
+		return m.Key
 	}
 	return ""
 }
 
-func (m *SearchKey) GetName() string {
-	if x, ok := m.GetKey().(*SearchKey_Name); ok {
-		return x.Name
+func (m *SearchWheres_SearchWhere) GetVal() []string {
+	if m != nil {
+		return m.Val
 	}
-	return ""
-}
-
-// XXX_OneofWrappers is for the internal use of the proto package.
-func (*SearchKey) XXX_OneofWrappers() []interface{} {
-	return []interface{}{
-		(*SearchKey_Id)(nil),
-		(*SearchKey_Name)(nil),
-	}
+	return nil
 }
 
 func init() {
 	proto.RegisterType((*UserList)(nil), "UserList")
 	proto.RegisterType((*UserList_UserMap)(nil), "UserList.UserMap")
 	proto.RegisterMapType((map[string]string)(nil), "UserList.UserMap.RowMapEntry")
-	proto.RegisterType((*SearchKey)(nil), "SearchKey")
+	proto.RegisterType((*SearchWheres)(nil), "SearchWheres")
+	proto.RegisterType((*SearchWheres_SearchWhere)(nil), "SearchWheres.SearchWhere")
 }
 
 func init() { proto.RegisterFile("user.proto", fileDescriptor_116e343673f7ffaf) }
 
 var fileDescriptor_116e343673f7ffaf = []byte{
-	// 229 bytes of a gzipped FileDescriptorProto
+	// 240 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2a, 0x2d, 0x4e, 0x2d,
 	0xd2, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x57, 0xda, 0xc2, 0xc8, 0xc5, 0x11, 0x5a, 0x9c, 0x5a, 0xe4,
 	0x93, 0x59, 0x5c, 0x22, 0xa4, 0xcd, 0xc5, 0x0e, 0x92, 0xca, 0x4d, 0x2c, 0x90, 0x60, 0x54, 0x60,
@@ -199,13 +206,13 @@ var fileDescriptor_116e343673f7ffaf = []byte{
 	0x0c, 0x6d, 0x7a, 0x41, 0x60, 0x79, 0xd7, 0xbc, 0x92, 0xa2, 0xca, 0x20, 0xa8, 0x62, 0x29, 0x4b,
 	0x2e, 0x6e, 0x24, 0x61, 0x21, 0x01, 0x2e, 0xe6, 0xec, 0xd4, 0x4a, 0x09, 0x46, 0x05, 0x46, 0x0d,
 	0xce, 0x20, 0x10, 0x53, 0x48, 0x84, 0x8b, 0xb5, 0x2c, 0x31, 0xa7, 0x34, 0x55, 0x82, 0x09, 0x2c,
-	0x06, 0xe1, 0x58, 0x31, 0x59, 0x30, 0x2a, 0x59, 0x71, 0x71, 0x06, 0xa7, 0x26, 0x16, 0x25, 0x67,
-	0x78, 0xa7, 0x82, 0x34, 0x32, 0x65, 0xa6, 0x40, 0xf4, 0x79, 0x30, 0x04, 0x31, 0x65, 0xa6, 0x08,
-	0x89, 0x70, 0xb1, 0xe4, 0x25, 0xe6, 0x42, 0xf5, 0x79, 0x30, 0x04, 0x81, 0x79, 0x4e, 0xac, 0x5c,
-	0xcc, 0xde, 0xa9, 0x95, 0x46, 0x46, 0x5c, 0x2c, 0x20, 0x3f, 0x08, 0x69, 0x71, 0x71, 0xa7, 0xa7,
-	0x96, 0xc0, 0x3d, 0xcf, 0xa5, 0x07, 0x37, 0x51, 0x8a, 0x13, 0xee, 0x01, 0x25, 0x06, 0x0d, 0x46,
-	0x03, 0xc6, 0x24, 0x36, 0x70, 0x68, 0x19, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x01, 0x21, 0x25,
-	0x61, 0x3b, 0x01, 0x00, 0x00,
+	0x06, 0xe1, 0x58, 0x31, 0x59, 0x30, 0x2a, 0x95, 0x70, 0xf1, 0x04, 0xa7, 0x26, 0x16, 0x25, 0x67,
+	0x84, 0x67, 0xa4, 0x16, 0xa5, 0x16, 0x0b, 0x19, 0x72, 0xb1, 0x95, 0x83, 0x59, 0x50, 0x17, 0x48,
+	0xea, 0x21, 0x4b, 0x23, 0x73, 0x82, 0xa0, 0x0a, 0xa5, 0x0c, 0xb9, 0xb8, 0x91, 0x84, 0xb1, 0xd8,
+	0x2e, 0xc0, 0xc5, 0x5c, 0x96, 0x98, 0x23, 0xc1, 0xa4, 0xc0, 0x0c, 0x12, 0x29, 0x4b, 0xcc, 0x31,
+	0x32, 0xe5, 0x62, 0x01, 0xf9, 0x5e, 0x48, 0x97, 0x8b, 0x3b, 0x3d, 0xb5, 0x04, 0x1e, 0x6c, 0xbc,
+	0x28, 0x96, 0x49, 0x71, 0xc2, 0x7d, 0xaf, 0xc4, 0xa0, 0xc1, 0x68, 0xc0, 0x98, 0xc4, 0x06, 0x0e,
+	0x6a, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0xe6, 0x2b, 0x42, 0x29, 0x78, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -241,7 +248,7 @@ func (c *userClient) GetUserList(ctx context.Context, opts ...grpc.CallOption) (
 }
 
 type User_GetUserListClient interface {
-	Send(*SearchKey) error
+	Send(*SearchWheres) error
 	Recv() (*UserList, error)
 	grpc.ClientStream
 }
@@ -250,7 +257,7 @@ type userGetUserListClient struct {
 	grpc.ClientStream
 }
 
-func (x *userGetUserListClient) Send(m *SearchKey) error {
+func (x *userGetUserListClient) Send(m *SearchWheres) error {
 	return x.ClientStream.SendMsg(m)
 }
 
@@ -277,7 +284,7 @@ func _User_GetUserList_Handler(srv interface{}, stream grpc.ServerStream) error 
 
 type User_GetUserListServer interface {
 	Send(*UserList) error
-	Recv() (*SearchKey, error)
+	Recv() (*SearchWheres, error)
 	grpc.ServerStream
 }
 
@@ -289,8 +296,8 @@ func (x *userGetUserListServer) Send(m *UserList) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *userGetUserListServer) Recv() (*SearchKey, error) {
-	m := new(SearchKey)
+func (x *userGetUserListServer) Recv() (*SearchWheres, error) {
+	m := new(SearchWheres)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}

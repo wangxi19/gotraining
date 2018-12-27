@@ -13,16 +13,29 @@ import (
 
 	"github.com/wangxi19/utils/fileutil"
 
-	pb "github.com/wangxi19/junk/proto"
+	pb "github.com/wangxi19/gotraining/grpc/proto"
 	"google.golang.org/grpc"
 )
 
+type strsFlag []string
+
+func (this *strsFlag) String() string {
+	return ""
+}
+
+func (this *strsFlag) Set(str string) error {
+	*this = append(*this, str)
+	return nil
+}
+
 var (
-	message string
+	field string
+	values strsFlag
 )
 
 func parse() {
-	flag.StringVar(&message, "msg", "1", "A message whose be used to sending")
+	flag.Var(&values, "values", "multiple values")
+	flag.StringVar(&field, "field", "", "a filed which be used by filter")
 	flag.Parse()
 }
 
@@ -34,6 +47,10 @@ func main () {
 	}()
 
 	parse();
+	
+	if 0 == len(values) || "" == field {
+		os.Exit(1)
+	}
 
 	chSignal := make(chan os.Signal, 1)
 	signal.Notify(chSignal, os.Interrupt)
@@ -55,12 +72,22 @@ func main () {
 		log.Fatalf("GetUserList: %v", err)
 	}
 
-	err = stream.Send(&pb.SearchKey{Key: &pb.SearchKey_Id{Id: message}})
+	err = stream.Send(&pb.SearchWheres{Wheres: []*pb.SearchWheres_SearchWhere{ &pb.SearchWheres_SearchWhere{Key: field, Val: values} }})
 	if nil != err {
 		log.Fatalf("Send error: %v", err)
 	}
 
 	userLst, err := stream.Recv()
+	if nil != err {
+		log.Fatalf("Recv error: %v", err)
+	}
+
+	err = stream.Send(&pb.SearchWheres{Wheres: []*pb.SearchWheres_SearchWhere{ &pb.SearchWheres_SearchWhere{Key: field, Val: values} }})
+	if nil != err {
+		log.Fatalf("Send error: %v", err)
+	}
+
+	userLst, err = stream.Recv()
 	if nil != err {
 		log.Fatalf("Recv error: %v", err)
 	}

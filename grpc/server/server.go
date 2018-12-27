@@ -9,15 +9,14 @@ import (
 	"time"
 	"sync"
 	"flag"
+	"strings"
 
 	// "github.com/golang/protobuf/proto"
-	pb "github.com/wangxi19/junk/proto"
+	pb "github.com/wangxi19/gotraining/grpc/proto"
 	"github.com/wangxi19/utils/sqlutil"
 	"google.golang.org/grpc"
 )
 
-type userServer struct {
-}
 
 type mutexBool struct {
 	v bool
@@ -27,15 +26,18 @@ type mutexBool struct {
 func (mb *mutexBool) set(val bool) {
 	mb.m.Lock()
 	defer mb.m.Unlock()
-
+	
 	mb.v = val
 }
 
 func (mb *mutexBool) get() bool {
 	mb.m.Lock()
 	defer mb.m.Unlock()
-
+	
 	return mb.v
+}
+
+type userServer struct {
 }
 
 func (s *userServer) GetUserList(stream pb.User_GetUserListServer) error {
@@ -43,7 +45,7 @@ func (s *userServer) GetUserList(stream pb.User_GetUserListServer) error {
 	timer := time.NewTimer(5000 * time.Millisecond)
 	go func() {
 		for {
-			searchKey, err := stream.Recv()
+			searchWheres, err := stream.Recv()
 			timer.Reset(5000 * time.Millisecond)
 
 			if io.EOF == err {
@@ -56,13 +58,10 @@ func (s *userServer) GetUserList(stream pb.User_GetUserListServer) error {
 				return
 			}
 		
-			keyMap := map[string]string{}
+			sqlwhere := &[]string{}
 
-			switch typeVal := searchKey.Key.(type) {
-			case *pb.SearchKey_Id:
-				keyMap["id"] = typeVal.Id
-			case *pb.SearchKey_Name:
-				keyMap["name"] = typeVal.Name
+			for _, oneWhere := range searchWheres.Wheres {
+				*sqlwhere = append(*sqlwhere, oneWhere.Key + " in ('" + strings.Join(oneWhere.Val, "', '") + "')")
 			}
 
 			db, err := dbpool.GetDB(dbname)
@@ -71,16 +70,7 @@ func (s *userServer) GetUserList(stream pb.User_GetUserListServer) error {
 				return
 			}
 
-			var sqlwhere string
-
-			val, ok := keyMap["id"]
-			if !ok {
-				sqlwhere = " name = '" + val + "' "
-			} else {
-				sqlwhere = " id = '" + val + "' "
-			}
-
-			arrayMap, err := sqlutil.SelectArrayMap(db, "sys_user", "*", sqlwhere, "", -1, -1)
+			arrayMap, err := sqlutil.SelectArrayMap(db, "sys_user", "*", "(" + strings.Join(*sqlwhere, ") OR (") + ")", "", -1, -1)
 
 			if nil != err {
 				rsterr = err
